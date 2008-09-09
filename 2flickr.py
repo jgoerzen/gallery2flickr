@@ -13,3 +13,7 @@ flickr = flickrapi.FlickrAPI(flickrapikey, flickrapisecret)
 if not token: raw_input("Press ENTER after you authorized this program")
 flickr.get_token_part_two((token, frob))
 
+albums = simplejson.loads(open(scandir + "/albums.info", "r").read())
+for (album, albuminfo) in albums.items():
+    print " *** Processing album %s" % album
+    
