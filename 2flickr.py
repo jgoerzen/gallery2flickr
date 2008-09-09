@@ -15,5 +15,7 @@ flickr.get_token_part_two((token, frob))
 
 albums = simplejson.loads(open(scandir + "/albums.info", "r").read())
 for (album, albuminfo) in albums.items():
-    print " *** Processing album %s" % album
+    print "\n *** Processing album %s" % album
+    images = simplejson.loads(open("%s/%s/images.info" % (scandir, album), "r").read())
+    print "%d images" % len(images)
     
