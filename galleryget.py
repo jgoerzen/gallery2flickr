@@ -15,7 +15,7 @@ g = Gallery(galleryurl, 2)
 albums = g.fetch_albums()
 
 os.mkdir(outputdir)
-open(outputdir + "albums.info", "w").write(simplejson.dumps(albums, indent=4))
+open(outputdir + "/albums.info", "w").write(simplejson.dumps(albums, indent=4))
 
 for (album, albuminfo) in albums.items():
     print " *** Processing album %s\n" % album
