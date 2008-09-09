@@ -25,6 +25,7 @@ for (album, albuminfo) in albums.items():
     open("%s/images.info" % albumpath, "w").write(simplejson.dumps(images, indent=4))
     for image in images:
         print "Downloading image " + image['name']
-        urllib.urlretrieve("%s/main.php?g2_view=core%3ADownloadItem&g2_itemId=%s" \
-                           % (galleryurl, image['name']),
+        urllib.urlretrieve(galleryurl +
+                           "/main.php?g2_view=core%3ADownloadItem&g2_itemId=" +
+                           image['name'],
                            albumpath + "/" + image['name'] + ".data")
