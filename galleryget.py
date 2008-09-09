@@ -3,21 +3,28 @@ from galleryremote import Gallery
 
 import sys
 import os
+import urllib
 
-galleryurl = sys.argv[0]
-outputdir = sys.argv[1]
+galleryurl = sys.argv[1]
+outputdir = sys.argv[2]
+
+print galleryurl
 
 g = Gallery(galleryurl, 2)
 
 albums = g.fetch_albums()
 
-os.mkdirs(outputdir)
-open(outputdir ++ "albums.info", "w").write(simplejson.dumps(a, indent=4))
+os.mkdir(outputdir)
+open(outputdir + "albums.info", "w").write(simplejson.dumps(albums, indent=4))
 
-for (album, albuminfo) in a.items():
+for (album, albuminfo) in albums.items():
     print " *** Processing album %s\n" % album
     images = g.fetch_album_images(album)
     albumpath = "%s/%s" % (outputdir, album)
-    os.mkdirs(albumpath)
+    os.mkdir(albumpath)
     open("%s/images.info" % albumpath, "w").write(simplejson.dumps(images, indent=4))
-    
+    for image in images:
+        print "Downloading image " + image['name']
+        urllib.urlretrieve("%s/main.php?g2_view=core%3ADownloadItem&g2_itemId=%s" \
+                           % (galleryurl, image['name']),
+                           albumpath + "/" + image['name'] + ".data")
