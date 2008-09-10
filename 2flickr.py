@@ -7,7 +7,7 @@ flickrapikey = sys.argv[1]
 flickrapisecret = sys.argv[2]
 scandir = sys.argv[3]
 
-flickr = flickrapi.FlickrAPI(flickrapikey, flickrapisecret)
+flickr = flickrapi.FlickrAPI(flickrapikey, flickrapisecret, format='etree')
 
 (token, frob) = flickr.get_token_part_one(perms='write')
 if not token: raw_input("Press ENTER after you authorized this program")
@@ -21,19 +21,23 @@ for (album, albuminfo) in albums.items():
     for imageidx in range(0, len(images)):
         image = images[imageidx]
         if 'flickrid' in image:
-            print "Image %s already uploaded with id %s" %
+            print "Image %s already uploaded with id %s" % \
                 (image['name'], image['flickrid'])
         else:
-            r = flickr.upload(filename = "%s/%s/%s.data", 
+            print image['title']
+            print image['caption'] + ' ' + image['description']
+            print "%s/%s/%s.data" % (scandir, album, image['name'])
+            print 'fromgallery galleryid:%s gallerylbumid:%s' % (image['name'], album)
+            r = flickr.upload(filename = "%s/%s/%s.data" % (scandir, album,
+                                                            image['name']),
                               title = image['title'],
                               description = image['caption'] + ' ' + 
                                             image['description'],
                               tags = 'fromgallery galleryid:%s galleryalbumid:%s' %
-                                     (image['name'], album),
-                              format = 'etree')
+                                     (image['name'], album))
             image['flickrid'] = r.find('photoid').text
             images[imageidx] = image
-            print "Image %s uploaded with id %s" %
+            print "Image %s uploaded with id %s" % \
                 (image['name'], image['flickrid'])
             writefd = open("%s/%s/images.info" % (scandir, album), "wt")
             writefd.write(simplejson.dumps(images, indent = 4))
