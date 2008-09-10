@@ -15,8 +15,8 @@ for line in open(csvpaths, "rt").readlines():
     csv[r[0]] = r[1]
 
 for (album, albuminfo) in albums.items():
-    print "\n\n# Album %s: %s" % (album, albuminfo['title'])
-    if ['flickrurl'] in albuminfo:
+    print "\n# Album %s: %s" % (album, albuminfo['title'])
+    if 'flickrurl' in albuminfo:
         if album in csv:
             print "RewriteRule ^/v/%s($|/$) %s" % \
                 (csv[album], albuminfo['flickrurl'])
