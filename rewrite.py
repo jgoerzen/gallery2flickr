@@ -15,7 +15,7 @@ for line in open(csvpaths, "rt").readlines():
     csv[r[0]] = r[1]
 
 for (album, albuminfo) in albums.items():
-    print "\n# Album %s: %s" % (album, albuminfo['title'])
+    print "\n\n######## Album %s: %s" % (album, albuminfo['title'])
     if 'flickrurl' in albuminfo:
         if album in csv:
             print "RewriteRule ^/v/%s($|/$) %s" % \
@@ -26,3 +26,7 @@ for (album, albuminfo) in albums.items():
     else:
         print "## FIXME: No Flickr URL for album!"
 
+    images = simplejson.loads(open("%s/%s/images.info" % (scandir, album), "r").read())
+    for image in images:
+        if image['name'] in csv:
+            
