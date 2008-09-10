@@ -18,7 +18,7 @@ for (album, albuminfo) in albums.items():
     print "\n\n######## Album %s: %s" % (album, albuminfo['title'])
     if 'flickrurl' in albuminfo:
         if album in csv:
-            print "RewriteRule ^/v/%s($|/$) %s [R=permanent,L]" % \
+            print "RewriteRule ^/v/%s($|/$) %sdetail/ [R=permanent,L]" % \
                 (csv[album], albuminfo['flickrurl'])
         else:
             print "## FIXME: No CSV for album %s: %s" % \
