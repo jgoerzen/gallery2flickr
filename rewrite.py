@@ -18,7 +18,7 @@ for (album, albuminfo) in albums.items():
     print "\n\n######## Album %s: %s" % (album, albuminfo['title'])
     if 'flickrurl' in albuminfo:
         if album in csv:
-            print "RewriteRule ^/v/%s($|/$) %s" % \
+            print "RewriteRule ^/v/%s($|/$) %s [R=permanent,L]" % \
                 (csv[album], albuminfo['flickrurl'])
         else:
             print "## FIXME: No CSV for album %s: %s" % \
@@ -29,13 +29,13 @@ for (album, albuminfo) in albums.items():
     images = simplejson.loads(open("%s/%s/images.info" % (scandir, album), "r").read())
     for image in images:
         if image['name'] in csv:
-            print "RewriteRule ^/v/%s/%s.html$ %s" % \
+            print "RewriteRule ^/v/%s/%s.html$ %s [R=permanent,L]" % \
                 (csv[album], csv[image['name']], image['flickrpage'])
-            print "RewriteRule ^/main.php?g2_view=core%3AShowItem&g2_itemId=%s(&|$) %s" % \
+            print "RewriteRule ^/main.php?g2_view=core%3AShowItem&g2_itemId=%s(&|$) %s [R=permanent,L]" % \
                 (image['name'], image['flickrpage'])
-            print "RewriteRule ^/d/%s-([0-9]+)/%s$ %s" % \
+            print "RewriteRule ^/d/%s-([0-9]+)/%s$ %s [R=permanent,L]" % \
                 (image['name'], csv[image['name']], image['flickrimg'])
-            print "RewriteRule ^/main.php?g2_view=core%3ADownloadItem&g2_itemId=%s(&|$) %s" % \
+            print "RewriteRule ^/main.php?g2_view=core%3ADownloadItem&g2_itemId=%s(&|$) %s [R=permanent,L]" % \
                 (image['name'], image['flickrimg'])
             print ""
         else:
