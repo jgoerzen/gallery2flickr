@@ -24,10 +24,6 @@ for (album, albuminfo) in albums.items():
             print "Image %s already uploaded with id %s" % \
                 (image['name'], image['flickrid'])
         else:
-            print image['title']
-            print image['caption'] + ' ' + image['description']
-            print "%s/%s/%s.data" % (scandir, album, image['name'])
-            print 'fromgallery galleryid:%s gallerylbumid:%s' % (image['name'], album)
             r = flickr.upload(filename = ("%s/%s/%s.data" % (scandir, album,
                                                             image['name'])).encode('utf-8'),
                               title = image['title'],
