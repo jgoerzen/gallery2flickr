@@ -7,7 +7,7 @@ flickrapikey = sys.argv[1]
 flickrapisecret = sys.argv[2]
 scandir = sys.argv[3]
 
-flickr = flickrapi.FlickrAPI(flickrapikey, flickrapisecret, format='etree')
+flickr = flickrapi.FlickrAPI(flickrapikey, flickrapisecret)
 
 (token, frob) = flickr.get_token_part_one(perms='write')
 if not token: raw_input("Press ENTER after you authorized this program")
@@ -35,7 +35,7 @@ for (album, albuminfo) in albums.items():
                                             image['description'],
                               tags = 'fromgallery galleryid:%s galleryalbumid:%s' %
                                      (image['name'], album))
-            image['flickrid'] = r.find('photoid').text
+            image['flickrid'] = r.photoid[0].text
             images[imageidx] = image
             print "Image %s uploaded with id %s" % \
                 (image['name'], image['flickrid'])
