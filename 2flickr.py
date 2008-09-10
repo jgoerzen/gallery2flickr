@@ -40,6 +40,10 @@ for (album, albuminfo) in albums.items():
             writefd.close()
         # uploaded image
         
+    if len(images) == 0:
+        print "Empty album; skipping"
+        continue
+
     if 'flickrid' in albums[album]:
         print "Using existing photoset with id %s" % albums[album]['flickrid']
     else:
@@ -53,9 +57,9 @@ for (album, albuminfo) in albums.items():
         writefd.close()
         print "Created photoset for album %s at %s" % (albums[album]['title'], albums[album]['flickrurl'])
         
-    print "len(images) = %d" % len(images)
+        print "len(images) = %d" % len(images)
 
-    for image in images[1:]:
-        flickr.photosets_addPhoto(photoset_id = albums[album]['flickrid'],
-                                  photo_id = image['flickrid'])
-        print "Added image %s to set" % image['name']
+        for image in images[1:]:
+            flickr.photosets_addPhoto(photoset_id = albums[album]['flickrid'],
+                                      photo_id = image['flickrid'])
+            print "Added image %s to set" % image['name']
