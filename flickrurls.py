@@ -27,7 +27,7 @@ for (album, albuminfo) in albums.items():
         for item in r.sizes[0].size:
             if item['label'] == 'Original':
                 images[imageidx]['flickrimg'] = item['source']
-        if not (flickrimg in images[imageidx]):
+        if not ('flickrimg' in images[imageidx]):
             print "No original URL found for image!"
             sys.exit(1)
     open("%s/%s/images.info" % (scandir, album), "wt").write(simplejson.dumps(images, indent = 4))
