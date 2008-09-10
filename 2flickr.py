@@ -17,5 +17,29 @@ albums = simplejson.loads(open(scandir + "/albums.info", "r").read())
 for (album, albuminfo) in albums.items():
     print "\n *** Processing album %s" % album
     images = simplejson.loads(open("%s/%s/images.info" % (scandir, album), "r").read())
-    print "%d images" % len(images)
+    print "%d total images" % len(images)
+    for imageidx in range(0, len(images)):
+        image = images[imageidx]
+        if 'flickrid' in image:
+            print "Image %s already uploaded with id %s" %
+                (image['name'], image['flickrid'])
+        else:
+            r = flickr.upload(filename = "%s/%s/%s.data", 
+                              title = image['title'],
+                              description = image['caption'] + ' ' + 
+                                            image['description'],
+                              tags = 'fromgallery galleryid:%s galleryalbumid:%s' %
+                                     (image['name'], album),
+                              format = 'etree')
+            image['flickrid'] = r.find('photoid').text
+            images[imageidx] = image
+            print "Image %s uploaded with id %s" %
+                (image['name'], image['flickrid'])
+            writefd = open("%s/%s/images.info" % (scandir, album), "wt")
+            writefd.write(simplejson.dumps(images, indent = 4))
+            writefd.close()
+        # uploaded image
+        
+    r = flickr.photosets_create(title=album['title'],
+                                description=album['summary'])
     
