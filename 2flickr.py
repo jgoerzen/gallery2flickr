@@ -44,6 +44,17 @@ for (album, albuminfo) in albums.items():
             writefd.close()
         # uploaded image
         
-    r = flickr.photosets_create(title=album['title'],
-                                description=album['summary'])
-    
+    if 'flickrid' in albums[album]:
+        print "Using existing photoset with id %s" % albums[album]['flickrid']
+    else:
+        r = flickr.photosets_create(title=albums[album]['title'],
+                                    description=albums[album]['summary'],
+                                    primary_photo_id=images[0]['flickrid'])
+        albums[album]['flickrid'] = r.photoset[0]['id']
+        albums[album]['flickrurl'] = r.photoset[0]['url']
+        writefd = open("%s/albums.info" % scandir, "w")
+        writefd.write(simplejson.dumps(albums, indent=4))
+        writefd.close()
+        print "Created photoset for album %s at %s" % (albums[album]['title'], albums[album]['flickrurl'])
+        
+        
