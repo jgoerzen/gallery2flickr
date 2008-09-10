@@ -29,4 +29,15 @@ for (album, albuminfo) in albums.items():
     images = simplejson.loads(open("%s/%s/images.info" % (scandir, album), "r").read())
     for image in images:
         if image['name'] in csv:
-            
+            print "RewriteRule ^/v/%s/%s.html$ %s" % \
+                (csv[album], csv[image['name']], image['flickrpage'])
+            print "RewriteRule ^/main.php?g2_view=core%3AShowItem&g2_itemId=%s(&|$) %s" % \
+                (image['name'], image['flickrpage'])
+            print "RewriteRule ^/d/%s-([0-9]+)/%s$ %s" % \
+                (image['name'], csv[image['name']], image['flickrimg'])
+            print "RewriteRule ^/main.php?g2_view=core%3ADownloadItem&g2_itemId=%s(&|$) %s" % \
+                (image['name'], image['flickrimg'])
+            print ""
+        else:
+            print "# FIXME: no entry in CSV for image %s" % image['name']
+
