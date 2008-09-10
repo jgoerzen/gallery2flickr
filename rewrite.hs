@@ -3,15 +3,18 @@ import Text.Printf
 import Data.String.Utils
 import System.Environment
 import qualified Data.Map as M
+import System.IO
 
 myDecode s = case decode s of
                Ok a -> return a
                Error s -> fail s
 
 main = do
+  hSetBuffering stdout NoBuffering
   [scandir, csvpaths] <- getArgs
-  albums <- readFile (scandir ++ "/albums.info") >>= myDecode
-
+  printf "About to read albums\n"
+  albums <- (readFile (scandir ++ "/albums.info") >>= myDecode)::IO (M.Map String (M.Map String String))
+  printf "Read albums\n"
   csvdata <- readFile csvpaths
   let csv = foldl (\m [k, v] -> M.insert k v m) M.empty . map (split ",")
             . lines $ csvdata
@@ -19,6 +22,7 @@ main = do
   
 (!) = (M.!)
 
+procAlbum :: String -> M.Map String String -> (String, M.Map String String) -> IO ()
 procAlbum scandir csv (album, albuminfo) =
     do printf "\n\n######## Album %s: %s\n" album (albuminfo ! "title")
        if M.member "flickrurl" albuminfo
