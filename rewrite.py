@@ -31,11 +31,11 @@ for (album, albuminfo) in albums.items():
         if image['name'] in csv:
             print "RewriteRule ^/v/%s/%s.html$ %s [R=permanent,L]" % \
                 (csv[album], csv[image['name']], image['flickrpage'])
-            print "RewriteRule ^/main.php?g2_view=core%3AShowItem&g2_itemId=%s(&|$) %s [R=permanent,L]" % \
+            print "RewriteRule ^/main.php?g2_view=core%%3AShowItem&g2_itemId=%s(&|$) %s [R=permanent,L]" % \
                 (image['name'], image['flickrpage'])
             print "RewriteRule ^/d/%s-([0-9]+)/%s$ %s [R=permanent,L]" % \
                 (image['name'], csv[image['name']], image['flickrimg'])
-            print "RewriteRule ^/main.php?g2_view=core%3ADownloadItem&g2_itemId=%s(&|$) %s [R=permanent,L]" % \
+            print "RewriteRule ^/main.php?g2_view=core%%3ADownloadItem&g2_itemId=%s(&|$) %s [R=permanent,L]" % \
                 (image['name'], image['flickrimg'])
             print ""
         else:
