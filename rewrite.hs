@@ -1,6 +1,6 @@
 import Text.JSON
 import Text.Printf
-
+import Data.String.Utils
 import System.Environment
 import qualified Data.Map as M
 
@@ -10,18 +10,18 @@ myDecode s = case decode s of
 
 main = do
   [scandir, csvpaths] <- getArgs
-  albums = readFile (scandir ++ "/albums.info") >>= myDecode
+  albums <- readFile (scandir ++ "/albums.info") >>= myDecode
 
   csvdata <- readFile csvpaths
   let csv = foldl (\m [k, v] -> M.insert k v m) M.empty . split "," . lines 
             $ csvdata
   mapM_ (procAlbum scandir csv) (M.toList albums)
   
-! = (M.!)
+(!) = (M.!)
 
 procAlbum scandir csv (album, albuminfo) =
     do printf "\n\n######## Album %s: %s\n" album (albuminfo ! "title")
-       if M.member "flickrurl" albuminfo:
+       if M.member "flickrurl" albuminfo
           then if M.member album csv
                     then printf "RewriteRule ^/v/%s($|/$) %s [R=permanent,L]\n" 
                          (csv ! album) (albuminfo ! "flickrurl")
