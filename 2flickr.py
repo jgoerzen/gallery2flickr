@@ -28,8 +28,8 @@ for (album, albuminfo) in albums.items():
             print image['caption'] + ' ' + image['description']
             print "%s/%s/%s.data" % (scandir, album, image['name'])
             print 'fromgallery galleryid:%s gallerylbumid:%s' % (image['name'], album)
-            r = flickr.upload(filename = "%s/%s/%s.data" % (scandir, album,
-                                                            image['name']),
+            r = flickr.upload(filename = ("%s/%s/%s.data" % (scandir, album,
+                                                            image['name'])).encode('utf-8'),
                               title = image['title'],
                               description = image['caption'] + ' ' + 
                                             image['description'],
